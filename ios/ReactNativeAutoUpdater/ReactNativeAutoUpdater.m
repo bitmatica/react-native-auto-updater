@@ -211,6 +211,10 @@ static bool isFirstAccess = YES;
         [self startDownloadingUpdateFromURL:urlToDownload];
     }
     else {
+        if ([self.delegate respondsToSelector:@selector(ReactNativeAutoUpdater:confirmedCurrentVersion:)]) {
+            [self.delegate ReactNativeAutoUpdater:self confirmedCurrentVersion:versionToDownload];
+        }
+        
         if (self.showProgress) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [StatusBarNotification showWithMessage:NSLocalizedString(@"Already Up to Date.", nil) backgroundColor:[StatusBarNotification successColor] autoHide:YES];
